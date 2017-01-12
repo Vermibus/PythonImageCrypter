@@ -6,7 +6,7 @@ I have created a simple implementation of pure steganography in python
 In my encrypt/decrypt scripts I'm changing/reading only the least important bit from each color of RGB pixel.
 
 
-##### About App
+##### About AoPIC
 
 Main file is app/main_app.py. 
 There is still a lot to code in this project, but feel free to coment. 
