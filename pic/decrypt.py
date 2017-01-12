@@ -3,8 +3,8 @@
 #TODO: Write the documentation
 
 from PySide import QtCore
-
 from PIL import Image
+
 class Decrypt (QtCore.QThread): #TODO: <!> REFACTOR WHOLE CLASS </!>
     progress = QtCore.Signal(int)
 

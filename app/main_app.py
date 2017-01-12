@@ -169,6 +169,8 @@ class DecodeTab(QtGui.QWidget):
         if sender == self.imageToDecodeButton:
             self.decodeImage = AoPIC.getImageOpenPath(self)
             self.imageToDecodeLine.setText(self.decodeImage)
+            if self.decodeProgressBar.value() == 100:
+                self.decodeProgressBar.setValue(0)
 
         elif sender == self.startDecodeButton:
             self.decodeStart()
