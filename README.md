@@ -1,8 +1,6 @@
  Application for Python Image Crypter
 ---
 
-#### *Feel free to use*
-
 I have created a simple implementation of pure steganography in python.  
 In my encrypt/decrypt scripts I'm changing/reading only the least important bit from each color of RGB pixel.
 
@@ -30,3 +28,7 @@ Next milestone:
 
 _Version:_
 _1.0_
+
+
+ *Feel free to use*  
+ *~Vermibus*
