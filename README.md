@@ -1,12 +1,12 @@
 ## Application for Python Image Crypter
 
-##### Feel free to use
+#### Feel free to use
 
 I have created a simple implementation of pure steganography in python
 In my encrypt/decrypt scripts I'm changing/reading only the least important bit from each color of RGB pixel.
 
 
-##### About AoPIC
+#### About AoPIC
 
 Main file is app/main_app.py. 
 There is still a lot to code in this project, but feel free to coment. 
