@@ -18,8 +18,10 @@ pip install PySide
 About AoPIC
 ---
 
-Main file is app/main_app.py. 
-There is still a lot to code in this project, but feel free to coment. 
+Main file is app/main_app.py.  
+There is still a lot to code in this project, but feel free to coment.  
+  
+The program converts the image to eight color equivalent. 
 
 #### Screens of app:  
 
