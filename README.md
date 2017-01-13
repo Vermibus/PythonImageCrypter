@@ -21,6 +21,11 @@ About AoPIC
 Main file is app/main_app.py. 
 There is still a lot to code in this project, but feel free to coment. 
 
+#### Screens of app:  
+
+![Alt text](/readmeSRC/encode.png?raw=true)
+![Alt text](/readmeSRC/decode.png?raw=true)
+
 Next milestone:
 * Implement RSA encryption
 * Add one more bit for hidden image on each pixel color. From 3bit-8colors to 6bit-64colors ! 
