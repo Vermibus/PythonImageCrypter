@@ -142,6 +142,7 @@ class DecodeTab(QtGui.QWidget):
 
         self.startDecodeButton = QtGui.QPushButton("Start", self)
         self.startDecodeButton.clicked.connect(self.buttonClicked)
+        self.startDecodeButton.setEnabled(False)
 
         self.decodeProgressBar = QtGui.QProgressBar(self)
 
@@ -171,9 +172,13 @@ class DecodeTab(QtGui.QWidget):
             self.imageToDecodeLine.setText(self.decodeImage)
             if self.decodeProgressBar.value() == 100:
                 self.decodeProgressBar.setValue(0)
-
         elif sender == self.startDecodeButton:
             self.decodeStart()
+
+        if self.decodeImage:
+            self.startDecodeButton.setEnabled(True)
+        else:
+            self.startDecodeButton.setEnabled(False)
 
 def main():
     app = QtGui.QApplication(sys.argv)
@@ -182,4 +187,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

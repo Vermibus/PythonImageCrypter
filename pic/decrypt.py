@@ -13,7 +13,7 @@ class Decrypt (QtCore.QThread): #TODO: <!> REFACTOR WHOLE CLASS </!>
         self.__image = image
         self.__parent = parent
 
-        try: #TODO: Implement pop-up like errors
+        try: #TODO: Implement pop-up like errors !
             self.iTE = Image.open(self.__image)
         except FileNotFoundError as err:
             print(err) #TODO: Error Handling
