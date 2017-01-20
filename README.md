@@ -10,7 +10,7 @@ Required:
 
 **PySide 1.2.2** (I didn't make research with older versions) 
 
-PySide can be easly downloaded via [PIP](https://pypi.python.org/pypi/pip)
+PySide can be easily downloaded via [PIP](https://pypi.python.org/pypi/pip)
 ``` 
 pip install PySide
 ```
