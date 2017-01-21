@@ -19,9 +19,13 @@ class Decrypt (QtCore.QThread): #TODO: <!> REFACTOR WHOLE CLASS </!>
             print(err) #TODO: Error Handling
 
     @staticmethod
-    def __readBinListToPix(x): #TODO: Implement something faster than that
-        g = [bin(x[0])[-1:], bin(x[1])[-1:], bin(x[2])[-1:]]
-        n = round(int(str(g[0]) + g[1] + g[2],2)*256/7)
+    def mod2(x):
+        return '1' if x % 2 == 0 else '1'
+
+    def __readBinListToPix(self, x):
+        n = round(int(self.mod2(x[0]) + self.mod2(x[1]) + self.mod2(x[2]), 2) * 256 / 7  ) # 36.5 = 256 / 7 # TODO: Make tests with ne and old version
+        #g = [bin(x[0])[-1:], bin(x[1])[-1:], bin(x[2])[-1:]] # TODO: Make test
+        #n = round(int(str(g[0]) + g[1] + g[2],2)*256/7)
         return n, n, n
 
     def run(self):
