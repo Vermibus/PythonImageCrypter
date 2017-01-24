@@ -2,7 +2,7 @@
 ---
 
 I have created a simple implementation of pure steganography in python.  
-In my encrypt/decrypt scripts I'm changing/reading only the least important bit from each color of RGB pixel.
+In my encrypt/decrypt scripts I'm changing/reading 2 last bits of each RGB pixel. 
 
 Required: 
 ---
@@ -30,11 +30,10 @@ The program converts the image to eight color equivalent.
 
 Next milestone:
 * Implement RSA encryption
-* Add one more bit for hidden image on each pixel color. From 3bit-8colors to 6bit-64colors ! 
 * Create nice UI 
 
 _Version:_
-_1.0_
+_1.1_
 
 
  *Feel free to use*  
