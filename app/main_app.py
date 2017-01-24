@@ -142,6 +142,9 @@ class DecodeTab(QtGui.QWidget):
         self.imageToDecodeButton = QtGui.QPushButton("Open", self)
         self.imageToDecodeButton.clicked.connect(self.buttonClicked)
 
+        self.outputImageLabel = QtGui.QLabel(self)
+        self.outputImageLabel.setText("Save as:")
+
         self.imageToDecodeSaveLine = QtGui.QLineEdit(self)
         self.imageToDecodeSaveLine.setEnabled(False)
 
@@ -158,11 +161,13 @@ class DecodeTab(QtGui.QWidget):
         grid.addWidget(self.imageToDecodeLine, 2, 0)
         grid.addWidget(self.imageToDecodeButton, 2, 1)
 
-        grid.addWidget(self.imageToDecodeSaveLine, 3, 0)
-        grid.addWidget(self.imageToDecodeSaveButton, 3, 1)
+        grid.addWidget(self.outputImageLabel, 3, 0 )
 
-        grid.addWidget(self.decodeProgressBar, 4, 0)
-        grid.addWidget(self.startDecodeButton, 4, 1)
+        grid.addWidget(self.imageToDecodeSaveLine, 4, 0)
+        grid.addWidget(self.imageToDecodeSaveButton, 4, 1)
+
+        grid.addWidget(self.decodeProgressBar, 5, 0)
+        grid.addWidget(self.startDecodeButton, 5, 1)
 
         self.setLayout(grid)
 
