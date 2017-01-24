@@ -131,6 +131,8 @@ class DecodeTab(QtGui.QWidget):
         grid.setAlignment(QtCore.Qt.AlignTop)
         grid.setVerticalSpacing(10)
 
+        self.decodeSaveImage = ''
+
         self.imageToDecodeLabel = QtGui.QLabel(self)
         self.imageToDecodeLabel.setText("Image to be decoded:")
 
@@ -139,6 +141,12 @@ class DecodeTab(QtGui.QWidget):
 
         self.imageToDecodeButton = QtGui.QPushButton("Open", self)
         self.imageToDecodeButton.clicked.connect(self.buttonClicked)
+
+        self.imageToDecodeSaveLine = QtGui.QLineEdit(self)
+        self.imageToDecodeSaveLine.setEnabled(False)
+
+        self.imageToDecodeSaveButton = QtGui.QPushButton("Save", self)
+        self.imageToDecodeSaveButton.clicked.connect(self.buttonClicked)
 
         self.startDecodeButton = QtGui.QPushButton("Start", self)
         self.startDecodeButton.clicked.connect(self.buttonClicked)
@@ -150,8 +158,11 @@ class DecodeTab(QtGui.QWidget):
         grid.addWidget(self.imageToDecodeLine, 2, 0)
         grid.addWidget(self.imageToDecodeButton, 2, 1)
 
-        grid.addWidget(self.decodeProgressBar, 3, 0)
-        grid.addWidget(self.startDecodeButton, 3, 1)
+        grid.addWidget(self.imageToDecodeSaveLine, 3, 0)
+        grid.addWidget(self.imageToDecodeSaveButton, 3, 1)
+
+        grid.addWidget(self.decodeProgressBar, 4, 0)
+        grid.addWidget(self.startDecodeButton, 4, 1)
 
         self.setLayout(grid)
 
@@ -159,7 +170,7 @@ class DecodeTab(QtGui.QWidget):
         self.decodeProgressBar.setValue(value)
 
     def decodeStart(self):
-        self.decodeThread = pic.decrypt.Decrypt(self.decodeImage, self)
+        self.decodeThread = pic.decrypt.Decrypt(self.decodeImage, self, self.decodeSaveImage)
         self.decodeThread.progress.connect(self.decodeProgressBarUpdate, QtCore.Qt.QueuedConnection)
         if not self.decodeThread.isRunning():
             self.decodeThread.start()
@@ -170,10 +181,15 @@ class DecodeTab(QtGui.QWidget):
         if sender == self.imageToDecodeButton:
             self.decodeImage = AoPIC.getImageOpenPath(self)
             self.imageToDecodeLine.setText(self.decodeImage)
-            if self.decodeProgressBar.value() == 100:
-                self.decodeProgressBar.setValue(0)
+
         elif sender == self.startDecodeButton:
             self.decodeStart()
+        elif sender == self.imageToDecodeSaveButton:
+            self.decodeSaveImage = AoPIC.getImageSavePath(self)
+            self.imageToDecodeSaveLine.setText(self.decodeSaveImage)
+
+        if self.decodeProgressBar.value() == 100:
+            self.decodeProgressBar.setValue(0)
 
         if self.decodeImage:
             self.startDecodeButton.setEnabled(True)

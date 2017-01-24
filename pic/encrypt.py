@@ -20,22 +20,18 @@ class Encrypt (QtCore.QThread):
             print(err) #TODO: Error Handling
 
     def __pixWrite(self, x, n):
-        return self.__bitWrite(x[0], n//4), self.__bitWrite(x[1], n%4//2), self.__bitWrite(x[2], n%2)
+        return self.__bitWrite(x[0], n[:2]), self.__bitWrite(x[1], n[2:4]), self.__bitWrite(x[2], n[4:6])
 
     @staticmethod
     def __bitWrite(n, x):
-        if n%2 == 0:
-            return n+x
-        else:
-            return n-1 if x==0 else n
+        return int(bin(n)[:-2]+x,2)
+
     @staticmethod
     def __pixToGray(x):
         if type(x) == tuple:
             x = sum(x)/len(x)
-        n = int(x//37)
-        if x%37>18.5:
-            n+=1
-        return n
+        n = int(x//4)
+        return bin(n)[2:].zfill(6)
 
     def run(self):
         #TODO: Implement pop-ups for differences in sizes of images

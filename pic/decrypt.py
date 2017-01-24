@@ -8,10 +8,11 @@ from PIL import Image
 class Decrypt (QtCore.QThread): #TODO: <!> REFACTOR WHOLE CLASS </!>
     progress = QtCore.Signal(int)
 
-    def __init__(self, image, parent=None):
+    def __init__(self, image, parent=None, saveImage=''):
         super(Decrypt, self).__init__(parent)
         self.__image = image
         self.__parent = parent
+        self.__saveImage = saveImage
 
         try: #TODO: Implement pop-up like errors !
             self.iTE = Image.open(self.__image)
@@ -19,14 +20,9 @@ class Decrypt (QtCore.QThread): #TODO: <!> REFACTOR WHOLE CLASS </!>
             print(err) #TODO: Error Handling
 
     @staticmethod
-    def mod2(x):
-        return '1' if x % 2 == 0 else '1'
-
-    def __readBinListToPix(self, x):
-        n = round(int(self.mod2(x[0]) + self.mod2(x[1]) + self.mod2(x[2]), 2) * 256 / 7  ) # 36.5 = 256 / 7 # TODO: Make tests with ne and old version
-        #g = [bin(x[0])[-1:], bin(x[1])[-1:], bin(x[2])[-1:]] # TODO: Make test
-        #n = round(int(str(g[0]) + g[1] + g[2],2)*256/7)
-        return n, n, n
+    def __readPix(x):
+        g = int( bin(x[0])[2:][-2:]+bin(x[1])[2:][-2:]+bin(x[2])[2:][-2:], 2) * 4 #To RGB
+        return g,g,g
 
     def run(self):
         ite_pix = self.iTE.load()
@@ -36,8 +32,10 @@ class Decrypt (QtCore.QThread): #TODO: <!> REFACTOR WHOLE CLASS </!>
 
         for x in range(0, width):
             for y in range(0, height):
-                im_pix[x,y] = self.__readBinListToPix(ite_pix[x,y])
+                im_pix[x,y] = self.__readPix(ite_pix[x,y])
                 QtCore.QThread.sleep(0.1)
             self.progress.emit(round(100*x/width))
 
+        if self.__saveImage:
+            image.save(self.__saveImage)
         image.show()
