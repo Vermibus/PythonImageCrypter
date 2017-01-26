@@ -1,4 +1,4 @@
- Application for Python Image Crypter
+ Implementation of pure steganography. 
 ---
 
 I have created a simple implementation of pure steganography in python.  
