@@ -10,18 +10,21 @@ Required:
 
 **PySide 1.2.2** (I didn't make research with older versions) 
 
-PySide can be easily downloaded via [PIP](https://pypi.python.org/pypi/pip)
+**Pillow 4.0.0** (I didn't make research with older versions) 
+
+PySide and Pillow can be easily downloaded via [PIP](https://pypi.python.org/pypi/pip)
+
 ``` 
-pip install PySide
+pip install PySide Pillow
 ```
 
 About AoPIC
 ---
 
 Main file is app/main_app.py.  
-There is still a lot to code in this project, but feel free to coment.  
+There is still a lot to code in this project, but feel free to share/coment.   
   
-The program converts the image to eight color equivalent. 
+The program converts the image to sixty four color equivalent. 
 
 #### Screens of app:  
 
