@@ -29,7 +29,18 @@ The program converts the image to sixty four color equivalent.
 #### Screens of app:  
 
 ![Alt text](/readmeSRC/encode.png?raw=true)
+
+| Main image: goats.png | Image to be encoded: ak47.jpg |
+|------------|---------------------|
+|![Alt text](/readmeSRC/example/goats.png?raw=true)|![Alt text](/readmeSRC/example/ak47.jpg?raw=true)|
+
+
 ![Alt text](/readmeSRC/decode.png?raw=true)
+
+| Image to be decoded: encrypted_goats.png | Decoded image: decrypted_ak47.png | 
+|---------------------|---------------|
+|![Alt text](/readmeSRC/example/encrypted_goats.png?raw=true)|![Alt text](/readmeSRC/example/decrypted_ak47.png?raw=true)|
+
 
 Next milestone:
 * Implement RSA encryption
