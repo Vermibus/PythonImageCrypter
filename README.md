@@ -2,7 +2,7 @@
 ---
 
 I have created a simple implementation of pure steganography in python.  
-In my encrypt/decrypt scripts I'm changing/reading 2 last bits of each RGB pixel. 
+In my encrypt/decrypt scripts I'm changing/reading 2 last bits of each RGB color, per pixel of course. 
 
 Required: 
 ---
