@@ -8,16 +8,19 @@
 
 
 # Chunk naming convention
-# Ancillary, Private, Reserved, Safe-to-copy 
+# Ancillary, Private, Reserved, Safe-to-copy
+
+# Local files
+from Decoder import ChunksDecoder
+
 
 class PNGExplorer(object):
     
     def __init__(self, file):
         self.file = file
         self.fileBuffer = open(file, 'rb')
-        self.chunkDecoders = {
-            b'IHDR': self._ihdr_decoder,
-        }
+        self.decoder = ChunksDecoder(self.fileBuffer)
+        self.chunkData = []
         
     def _ensure_is_png(self):
         self.fileBuffer.seek(0, 0)
@@ -29,43 +32,36 @@ class PNGExplorer(object):
                 raise BaseException
 
     def _chunk_reader(self):
-        length = int.from_bytes(self.fileBuffer.read(4), 'big')
+        position = self.fileBuffer.tell()
+        data_length = int.from_bytes(self.fileBuffer.read(4), 'big')
         chunk_type = self.fileBuffer.read(4)
         data_offset = self.fileBuffer.tell()
-        self.fileBuffer.seek(length, 1)
+        self.fileBuffer.seek(data_length, 1)
         crc = self.fileBuffer.read(4)
-        return length, data_offset, chunk_type, crc
-        
-    def _ihdr_decoder(self, data_offset):
-        carriage = self.fileBuffer.tell()
-        self.fileBuffer.seek(data_offset, 0)
-        data = {
-            'width': self.fileBuffer.read(4),
-            'height': self.fileBuffer.read(4),
-            'bitDepth': self.fileBuffer.read(1),
-            'colorType': self.fileBuffer.read(1),
-            'filterMethod': self.fileBuffer.read(1),
-            'interlaceMethod': self.fileBuffer.read(1),
-        }
-        self.fileBuffer.seek(carriage, 0)
-        return data
-    
-    def _type_decoder(self, chunk_type, data_offset):
-        if chunk_type in self.chunkDecoders:
-            return self.chunkDecoders[chunk_type](data_offset)
-        else:
-            return None
-        
+        return position, data_length, data_offset, chunk_type, crc
+
     def run(self):
         self._ensure_is_png()
         while True:
-            length, data_offset, chunk_type, crc = self._chunk_reader()
+            position, data_length, data_offset, chunk_type, crc = self._chunk_reader()
             if chunk_type == b'':
                 break
-            data = self._type_decoder(chunk_type, data_offset)
-            if data is not None:
-                print(data)
+
+            data = self.decoder.decode(chunk_type, data_length, data_offset)
+            self.chunkData.append({
+                'type': chunk_type,
+                'position': position,
+                'data_length': data_length,
+                'data_offset': data_offset,
+                'data': data,
+                'crc': crc,
+            })
+
+            computed_crc = self.decoder.crc32(position, data_length)
+            if computed_crc.to_bytes(4, 'big') != crc:
+                print("Computed CRC is not matching the provided one. Chunk dump:\n"+str(self.chunkData[-1]))
 
 
-png = PNGExplorer('cat.png')
-png.run()
+if __name__ == '__main__':
+    png = PNGExplorer('cat.png')
+    png.run()
