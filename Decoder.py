@@ -62,6 +62,25 @@ class ChunksDecoder(object):
             'keyword': keyword,
             'text': text,
         }
+    
+    def idat_decoder(self, chunks):
+        raw_data = b''
+        data = {}
+        for idat_chunk in chunks:
+            self.memory.seek(idat_chunk['data_offset'], 0)
+            raw_data += self.memory.read(idat_chunk['data_length'])
+        data['CMF'] = raw_data[0]
+        data['FLG'] = raw_data[1]
+
+        data['CM'] = data['CMF'] & 0xF
+        data['CINFO'] = (data['CMF'] >> 4) & 0xF
+        data['FCHECK'] = data['FLG'] & 0x1F
+        data['FDICT'] = (data['FLG'] >> 5) & 0x1
+        data['FLEVEL'] = (data['FLG'] >> 6) & 0x3
+
+        if data['FDICT'] == 0:
+            data['DICT'] = raw_data[2:6]
+        return data
 
     @staticmethod
     def _init_crc32_table():
