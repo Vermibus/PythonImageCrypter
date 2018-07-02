@@ -11,37 +11,40 @@
 # Ancillary, Private, Reserved, Safe-to-copy
 
 # Local files
-from Decoder import ChunksDecoder
+from decoder import ChunksDecoder
+from memory import Memory   
 
 
 class PNGExplorer(object):
-    
-    def __init__(self, file):
-        self.file = file
-        self.fileBuffer = open(file, 'rb')
-        self.decoder = ChunksDecoder(self.fileBuffer)
+
+    def __init__(self):
+        self.image = Memory()
+        self.decoder = ChunksDecoder(self.image)
         self.chunkData = []
-        
-    def _ensure_is_png(self):
-        self.fileBuffer.seek(0, 0)
-        file_signature = self.fileBuffer.read(8)
+
+    def load_image(self, filename):
+        self.image.load_from_file(filename)
+
+    def ensure_is_png(self):
+        if self.image is None:
+            print('Image has not been loaded yet. Exiting')
+            raise BaseException
         png_signature = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]
-        for signature, byte in zip(png_signature, file_signature):
-            if signature != byte:
-                print('File signature not matching PNG.')
-                raise BaseException
+        if any(x != y for x, y in zip(self.image.read(8), png_signature)):
+            print('File signature not matching PNG.')
+            raise BaseException
 
     def _chunk_reader(self):
-        position = self.fileBuffer.tell()
-        data_length = int.from_bytes(self.fileBuffer.read(4), 'big')
-        chunk_type = self.fileBuffer.read(4)
-        data_offset = self.fileBuffer.tell()
-        self.fileBuffer.seek(data_length, 1)
-        crc = self.fileBuffer.read(4)
+        position = self.image.get_pointer()
+        data_length = int.from_bytes(self.image.read(4), 'big')
+        chunk_type = self.image.read(4)
+        data_offset = self.image.get_pointer()
+        self.image.seek(offset=data_length, offset_type=1)
+        crc = self.image.read(4)
         return position, data_length, data_offset, chunk_type, crc
 
     def run(self):
-        self._ensure_is_png()
+        self.ensure_is_png()
         while True:
             position, data_length, data_offset, chunk_type, crc = self._chunk_reader()
             if chunk_type == b'':
@@ -63,5 +66,6 @@ class PNGExplorer(object):
 
 
 if __name__ == '__main__':
-    png = PNGExplorer('cat.png')
+    png = PNGExplorer()
+    png.load_image('cat.png')
     png.run()
